@@ -8,14 +8,25 @@
 
 import UIKit
 
-class ViewController: UIViewController, Storyboarded, UITableViewDelegate, TableViewCellDecorator
+class ViewController: UIViewController, UITableViewDelegate, TableViewCellDecorator
 {
 	weak var coordinator: MasterCoordinator?
-	@IBOutlet var speechTable: UITableView!
-	@IBOutlet var listTypeSwitch: UISegmentedControl!
+	var speechTable: UITableView!
+	var listTypeSwitch: UISegmentedControl!
 	
 	var unfinishedSpeeches: SpeechList!
 	var finishedSpeeches: SpeechList!
+	
+	static func instantiate() -> ViewController
+	{
+		let vc = ViewController()
+		
+		// TODO: Create custom elements
+		vc.speechTable = UITableView()
+		vc.listTypeSwitch = UISegmentedControl()
+		
+		return vc
+	}
 	
 	override func viewDidLoad()
 	{
@@ -64,7 +75,8 @@ class ViewController: UIViewController, Storyboarded, UITableViewDelegate, Table
 		return cell
 	}
 	
-	@IBAction func listTypeSwitched(_ sender: Any)
+	//@IBAction
+	func listTypeSwitched(_ sender: Any)
 	{
 		if listTypeSwitch.selectedSegmentIndex == 0
 		{ speechTable.dataSource = unfinishedSpeeches }
