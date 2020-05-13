@@ -41,11 +41,7 @@ extension SpeechList: UITableViewDataSource
 {
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
 	{ speeches.count }
-	//{ 10 }
 	
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
-	{
-		return cellDecorator.cell(forRowAt: indexPath, of: tableView, label: speeches[indexPath.row].topic)
-		//return cellDecorator.cell(forRowAt: indexPath, of: tableView, label: "This is some text. It is here just to make some content.")
-	}
+	{ return cellDecorator.cell(forRowAt: indexPath, of: tableView, label: speeches[indexPath.row].topic) }
 }

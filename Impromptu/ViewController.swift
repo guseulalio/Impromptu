@@ -8,14 +8,25 @@
 
 import UIKit
 
-class ViewController: UIViewController, Storyboarded, UITableViewDelegate, TableViewCellDecorator
+class ViewController: UIViewController, UITableViewDelegate, TableViewCellDecorator
 {
 	weak var coordinator: MasterCoordinator?
-	@IBOutlet var speechTable: UITableView!
-	@IBOutlet var listTypeSwitch: UISegmentedControl!
+	var speechTable: UITableView!
+	var listTypeSwitch: UISegmentedControl!
 	
 	var unfinishedSpeeches: SpeechList!
 	var finishedSpeeches: SpeechList!
+	
+	static func instantiate() -> ViewController
+	{
+		let vc = ViewController()
+		
+		// TODO: Create custom elements
+		vc.speechTable = UITableView()
+		vc.listTypeSwitch = UISegmentedControl()
+		
+		return vc
+	}
 	
 	override func viewDidLoad()
 	{
@@ -31,21 +42,29 @@ class ViewController: UIViewController, Storyboarded, UITableViewDelegate, Table
 		
 		speechTable.dataSource = unfinishedSpeeches
 		
-		speechTable.layer.cornerRadius = 16
 		speechTable.layer.borderColor = UIColor.systemOrange.cgColor
 		speechTable.layer.borderWidth = 3
+		
+		let selectedAttributes = [NSAttributedString.Key.foregroundColor: UIColor.black,
+								  NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12, weight: .regular)]
+		let unselectedAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white,
+									NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12, weight: .bold)]
+		listTypeSwitch.setTitleTextAttributes(selectedAttributes, for: .selected)
+		listTypeSwitch.setTitleTextAttributes(unselectedAttributes, for: .normal)
 		
 		populateSpeeches()
 	}
 	
 	// populating with fake boilerplate text.
+	// @TODO Remove
 	func populateSpeeches()
 	{
-		for i in 1...30
+		for _ in 1...40
 		{
 			if Bool.random()
-			{ unfinishedSpeeches.add(Speech(with: "This is unfinished speech number \(i). There's a lot to do here.")) }
-			finishedSpeeches.add(Speech(with: "This is speech number \(i*100). It's done and ready to be delivered."))
+			{ unfinishedSpeeches.add(Speech(with: Lorem.sentence)) }
+			else
+			{ finishedSpeeches.add(Speech(with: Lorem.sentence)) }
 		}
 	}
 	
@@ -56,7 +75,8 @@ class ViewController: UIViewController, Storyboarded, UITableViewDelegate, Table
 		return cell
 	}
 	
-	@IBAction func listTypeSwitched(_ sender: Any)
+	//@IBAction
+	func listTypeSwitched(_ sender: Any)
 	{
 		if listTypeSwitch.selectedSegmentIndex == 0
 		{ speechTable.dataSource = unfinishedSpeeches }
